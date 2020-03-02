@@ -160,9 +160,10 @@ For this oversimplified serialization function, you may assume that
 the string will be made up of alphanumeric characters only.
 ......................................................................*)
 
-module IntStringStack = ( struct
+module IntStringStack = (
+  struct
       type t = (int * string)
-      let serialize ((n : int),(s : string)) : string =
+      let serialize (n, s) =
         let str_n = string_of_int n in
         "(" ^ str_n ^ ",\'" ^ s ^ "\')"
     end
