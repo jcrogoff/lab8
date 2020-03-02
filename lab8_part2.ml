@@ -160,13 +160,13 @@ For this oversimplified serialization function, you may assume that
 the string will be made up of alphanumeric characters only.
 ......................................................................*)
 
-module IntStringStack = MakeStack(
+module IntStringSerialize =
   struct
-      type t = (int * string)
-      let serialize (n, s : int * string) =
-        let str_n = string_of_int n in
-        "(" ^ str_n ^ ",\'" ^ s ^ "\')"
-    end
-   ) ;;
+    type t = (int * string)
+    let serialize (n,s) =
+      let str_n = string_of_int n in
+      "(" ^ str_n ^ ",'" ^ s ^ "')"
+  end;;
+module IntStringStack = MakeStack(IntStringSerialize) ;;
 
 
