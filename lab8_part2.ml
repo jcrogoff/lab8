@@ -126,7 +126,7 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
       List.fold_left f init s ;;
 
     let serialize (s : stack) : string =
-      fold_left (fun acc elt -> Element.serialize elt ^ acc) "" s ;;
+      fold_left (fun x y -> Element.serialize y ^ if (not (x = "")) then ":" ^ x else "") "" s ;;
   end ;;
 
 (*......................................................................
@@ -134,17 +134,15 @@ Exercise 1B: Now, make a module `IntStack` by applying the functor
 that you just defined to an appropriate module for serializing integers.
 ......................................................................*)
 
-module IntSerialize : SERIALIZE =
+module IntSerialize : (SERIALIZE with type t = int) =
   struct
     type t = int
     let serialize (number : t) : string =
       string_of_int number
   end ;;
 
-module IntStack =
-  struct
-
-  end ;;
+module IntStack : (STACK with type element = IntSerialize.t) =
+  MakeStack(IntSerialize) ;;
 
 (*......................................................................
 Exercise 1C: Make a module `IntStringStack` that creates a stack whose
@@ -162,6 +160,12 @@ For this oversimplified serialization function, you may assume that
 the string will be made up of alphanumeric characters only.
 ......................................................................*)
 
-module IntStringStack = struct end ;;
+module IntStringStack = ( struct
+      type t = (int * string)
+      let serialize (n : int) (s : string) : string =
+        let str_n = string_of_int n in
+        "(" ^ str_n ^ ",\'" ^ s ^ "\')"
+    end
+   ) ;;
 
 
