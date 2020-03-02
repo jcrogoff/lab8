@@ -160,7 +160,7 @@ For this oversimplified serialization function, you may assume that
 the string will be made up of alphanumeric characters only.
 ......................................................................*)
 
-module IntStringStack = (
+module IntStringStack = MakeStack(
   struct
       type t = (int * string)
       let serialize (n, s : int * string) =
